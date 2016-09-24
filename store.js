@@ -4,8 +4,13 @@ function statement(customer, movies) {
   let totalAmount = 0;
   let totalFrequentRenterPoints = 0;
   let result = `Rental Record for ${customer.name}\n`;
+
+  function movieFor(rental) {
+    return movies[rental.movieID];
+  }
+
   for (let rental of customer.rentals) {
-    let movie = movies[rental.movieID];
+    var movie = movieFor(rental);
     let thisAmount = 0;
 
     // determine amount for each movie
