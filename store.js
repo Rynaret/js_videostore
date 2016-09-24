@@ -9,10 +9,8 @@ function statement(customer, movies) {
     return movies[rental.movieID];
   }
 
-  for (let rental of customer.rentals) {
-    var movie = movieFor(rental);
+  function getTotalAmount(rental) {
     let thisAmount = 0;
-
     // determine amount for each movie
     switch (movie.code) {
       case "regular":
@@ -31,6 +29,12 @@ function statement(customer, movies) {
         }
         break;
     }
+    return thisAmount;
+  }
+
+  for (let rental of customer.rentals) {
+    var movie = movieFor(rental);
+    var thisAmount = getTotalAmount(rental);
 
     //add frequent renter points
     totalFrequentRenterPoints++;
