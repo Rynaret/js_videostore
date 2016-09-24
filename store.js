@@ -4,7 +4,7 @@ function statement(customer, movies) {
   let result = `Rental Record for ${customer.name}\n`;
 
   for (let rental of customer.rentals) {
-    result += `\t${movieFor(rental).title}\t${getAmount(rental)}\n`;
+    result += `\t${movieFor(rental, movies).title}\t${getAmount(rental)}\n`;
   }
 
   // add footer lines
@@ -13,14 +13,11 @@ function statement(customer, movies) {
 
   return result;
 
-  function movieFor(rental) {
-    return movies[rental.movieID];
-  }
 
   function getAmount(rental) {
     let thisAmount = 0;
     // determine amount for each movie
-    switch (movieFor(rental).code) {
+    switch (movieFor(rental, movies).code) {
       case "regular":
         thisAmount = 2;
         if (rental.days > 2) {
@@ -41,7 +38,7 @@ function statement(customer, movies) {
   }
 
   function getFrequentRenterPoints(rental) {
-    return (movieFor(rental).code === "new" && rental.days > 2) ? 2 : 1;
+    return (movieFor(rental, movies).code === "new" && rental.days > 2) ? 2 : 1;
   }
 
   function getTotalFrequentRenterPoints(customer) {
@@ -59,6 +56,10 @@ function statement(customer, movies) {
     }
     return totalAmount;
   }
+}
+
+function movieFor(rental, movies) {
+    return movies[rental.movieID];
 }
 
 let customer = {
