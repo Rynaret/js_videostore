@@ -8,18 +8,10 @@ function statement(customer, movies) {
   }
 
   // add footer lines
-  result += `Amount owed is ${getTotalAmount(customer)}\n`;
+  result += `Amount owed is ${getTotalAmount(customer, movies)}\n`;
   result += `You earned ${getTotalFrequentRenterPoints(customer, movies)} frequent renter points\n`;
 
   return result;
-
-  function getTotalAmount(customer) {
-    let totalAmount = 0;
-    for (let rental of customer.rentals) {
-      totalAmount += getAmount(rental, movies);
-    }
-    return totalAmount;
-  }
 }
 
 function movieFor(rental, movies) {
@@ -59,6 +51,14 @@ function getTotalFrequentRenterPoints(customer, movies) {
     totalFrequentRenterPoints += getFrequentRenterPoints(rental, movies);
   }
   return totalFrequentRenterPoints;
+}
+
+function getTotalAmount(customer, movies) {
+  let totalAmount = 0;
+  for (let rental of customer.rentals) {
+    totalAmount += getAmount(rental, movies);
+  }
+  return totalAmount;
 }
 
 let customer = {
