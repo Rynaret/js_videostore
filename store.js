@@ -41,6 +41,9 @@ class Rental{
     }
     return thisAmount;
   }
+  get frequentRenterPoints(){
+    return (this.movie.code === "new" && this.days > 2) ? 2 : 1;
+  }
 }
 
 function statement(customerArg, movies) {
@@ -58,14 +61,10 @@ function statement(customerArg, movies) {
   return result;
 }
 
-function getFrequentRenterPoints(rental) {
-  return (rental.movie.code === "new" && rental.days > 2) ? 2 : 1;
-}
-
 function getTotalFrequentRenterPoints(customer) {
   let totalFrequentRenterPoints = 0;
   for (let rental of customer.rentals) {
-    totalFrequentRenterPoints += getFrequentRenterPoints(rental);
+    totalFrequentRenterPoints += rental.frequentRenterPoints;
   }
   return totalFrequentRenterPoints;
 }
