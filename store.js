@@ -15,6 +15,13 @@ class Customer{
     }
     return totalFrequentRenterPoints;
   }
+  get totalAmount(){
+    let totalAmount = 0;
+    for (let rental of this.rentals) {
+      totalAmount += rental.amount;
+    }
+    return totalAmount;
+  }
 }
 
 class Rental{
@@ -63,17 +70,9 @@ function statement(customerArg, movies) {
   }
 
   // add footer lines
-  result += `Amount owed is ${getTotalAmount(customer)}\n`;
+  result += `Amount owed is ${customer.totalAmount}\n`;
   result += `You earned ${customer.totalFrequentRenterPoints} frequent renter points\n`;
   return result;
-}
-
-function getTotalAmount(customer) {
-  let totalAmount = 0;
-  for (let rental of customer.rentals) {
-    totalAmount += rental.amount;
-  }
-  return totalAmount;
 }
 
 let customer = {
