@@ -2,14 +2,24 @@
 
 function Customer(data){
   return {
-    name: () => data.name,
-    rentals: data.rentals,
+    name: data.name,
+    rentals: rentals(data),
+  };
+
+  function rentals(data) {
+    return data.rentals.map(r => new Rental(r));
   }
 }
 
+function Rental(data){
+  return {
+    movieID: data.movieID,
+    days: data.days
+  }
+}
 
 function statement(customerArg, movies) {
-  let customer = Customer(customerArg);
+  let customer = new Customer(customerArg);
   let result = `Rental Record for ${customer.name}\n`;
 
   for (let rental of customer.rentals) {
