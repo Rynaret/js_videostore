@@ -19,6 +19,28 @@ class Rental{
   get days(){return this._data.days;}
 
   get movie(){return this._movies[this.movieID]}
+  get amount(){
+    let thisAmount = 0;
+    // determine amount for each movie
+    switch (this.movie.code) {
+      case "regular":
+        thisAmount = 2;
+        if (this.days > 2) {
+          thisAmount += (this.days - 2) * 1.5;
+        }
+        break;
+      case "new":
+        thisAmount = this.days * 3;
+        break;
+      case "childrens":
+        thisAmount = 1.5;
+        if (this.days > 3) {
+          thisAmount += (this.days - 3) * 1.5;
+        }
+        break;
+    }
+    return thisAmount;
+  }
 }
 
 function statement(customerArg, movies) {
@@ -26,7 +48,7 @@ function statement(customerArg, movies) {
   let result = `Rental Record for ${customer.name}\n`;
 
   for (let rental of customer.rentals) {
-    result += `\t${rental.movie.title}\t${getAmount(rental)}\n`;
+    result += `\t${rental.movie.title}\t${rental.amount}\n`;
   }
 
   // add footer lines
@@ -34,29 +56,6 @@ function statement(customerArg, movies) {
   result += `You earned ${getTotalFrequentRenterPoints(customer)} frequent renter points\n`;
 
   return result;
-}
-
-function getAmount(rental) {
-  let thisAmount = 0;
-  // determine amount for each movie
-  switch (rental.movie.code) {
-    case "regular":
-      thisAmount = 2;
-      if (rental.days > 2) {
-        thisAmount += (rental.days - 2) * 1.5;
-      }
-      break;
-    case "new":
-      thisAmount = rental.days * 3;
-      break;
-    case "childrens":
-      thisAmount = 1.5;
-      if (rental.days > 3) {
-        thisAmount += (rental.days - 3) * 1.5;
-      }
-      break;
-  }
-  return thisAmount;
 }
 
 function getFrequentRenterPoints(rental) {
@@ -74,7 +73,7 @@ function getTotalFrequentRenterPoints(customer) {
 function getTotalAmount(customer) {
   let totalAmount = 0;
   for (let rental of customer.rentals) {
-    totalAmount += getAmount(rental);
+    totalAmount += rental.amount;
   }
   return totalAmount;
 }
