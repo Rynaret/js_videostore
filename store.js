@@ -16,7 +16,7 @@ class Customer{
   get totalAmount(){
     return this.rentals
         .map(r => r.amount)
-        .reduce((total, a) => total + a);
+        .reduce((total, a) => total + a, 0);
   }
 }
 
