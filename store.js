@@ -1,21 +1,11 @@
 "use strict";
-
-function Customer(data){
-  return {
-    name: data.name,
-    rentals: rentals(data),
-  };
-
-  function rentals(data) {
-    return data.rentals.map(r => new Rental(r));
+class Customer{
+  constructor(data){
+    this._data = data;
   }
-}
 
-function Rental(data){
-  return {
-    movieID: data.movieID,
-    days: data.days
-  }
+  get name(){return this._data.name;}
+  get rentals(){return this._data.rentals;}
 }
 
 function statement(customerArg, movies) {
