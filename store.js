@@ -1,6 +1,15 @@
 "use strict";
 
-function statement(customer, movies) {
+function Customer(data){
+  return {
+    name: () => data.name,
+    rentals: data.rentals,
+  }
+}
+
+
+function statement(customerArg, movies) {
+  let customer = Customer(customerArg);
   let result = `Rental Record for ${customer.name}\n`;
 
   for (let rental of customer.rentals) {
