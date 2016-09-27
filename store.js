@@ -1,45 +1,45 @@
 "use strict";
 class Customer{
-  constructor(data){
+  constructor(data, movies){
     this._data = data;
+    this._movies = movies;
   }
 
   get name(){return this._data.name;}
-  get rentals(){return this._data.rentals.map(r => new Rental(r));}
+  get rentals(){return this._data.rentals.map(r => new Rental(r, this._movies));}
 }
 
 class Rental{
-  constructor(data){
+  constructor(data, movies){
     this._data = data;
+    this._movies = movies;
   }
 
   get movieID(){return this._data.movieID;}
   get days(){return this._data.days;}
+
+  get movie(){return this._movies[this.movieID]}
 }
 
 function statement(customerArg, movies) {
-  let customer = new Customer(customerArg);
+  let customer = new Customer(customerArg, movies);
   let result = `Rental Record for ${customer.name}\n`;
 
   for (let rental of customer.rentals) {
-    result += `\t${movieFor(rental, movies).title}\t${getAmount(rental, movies)}\n`;
+    result += `\t${rental.movie.title}\t${getAmount(rental)}\n`;
   }
 
   // add footer lines
-  result += `Amount owed is ${getTotalAmount(customer, movies)}\n`;
-  result += `You earned ${getTotalFrequentRenterPoints(customer, movies)} frequent renter points\n`;
+  result += `Amount owed is ${getTotalAmount(customer)}\n`;
+  result += `You earned ${getTotalFrequentRenterPoints(customer)} frequent renter points\n`;
 
   return result;
 }
 
-function movieFor(rental, movies) {
-    return movies[rental.movieID];
-}
-
-function getAmount(rental, movies) {
+function getAmount(rental) {
   let thisAmount = 0;
   // determine amount for each movie
-  switch (movieFor(rental, movies).code) {
+  switch (rental.movie.code) {
     case "regular":
       thisAmount = 2;
       if (rental.days > 2) {
@@ -59,22 +59,22 @@ function getAmount(rental, movies) {
   return thisAmount;
 }
 
-function getFrequentRenterPoints(rental, movies) {
-  return (movieFor(rental, movies).code === "new" && rental.days > 2) ? 2 : 1;
+function getFrequentRenterPoints(rental) {
+  return (rental.movie.code === "new" && rental.days > 2) ? 2 : 1;
 }
 
-function getTotalFrequentRenterPoints(customer, movies) {
+function getTotalFrequentRenterPoints(customer) {
   let totalFrequentRenterPoints = 0;
   for (let rental of customer.rentals) {
-    totalFrequentRenterPoints += getFrequentRenterPoints(rental, movies);
+    totalFrequentRenterPoints += getFrequentRenterPoints(rental);
   }
   return totalFrequentRenterPoints;
 }
 
-function getTotalAmount(customer, movies) {
+function getTotalAmount(customer) {
   let totalAmount = 0;
   for (let rental of customer.rentals) {
-    totalAmount += getAmount(rental, movies);
+    totalAmount += getAmount(rental);
   }
   return totalAmount;
 }
