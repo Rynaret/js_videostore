@@ -14,11 +14,9 @@ class Customer{
         .reduce((total, r) => total + r);
   }
   get totalAmount(){
-    let totalAmount = 0;
-    for (let rental of this.rentals) {
-      totalAmount += rental.amount;
-    }
-    return totalAmount;
+    return this.rentals
+        .map(r => r.amount)
+        .reduce((total, a) => total + a);
   }
 }
 
